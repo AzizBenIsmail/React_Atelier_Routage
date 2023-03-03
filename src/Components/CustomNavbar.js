@@ -9,11 +9,12 @@ const CustomNavbar = () => {
   return (
     <div> <Navbar bg="light" expand="lg">
     <Container>
-      <Navbar.Brand href="#home">MyStore</Navbar.Brand>
+      <Navbar.Brand as={NavLink} to="/" style={({isActive})=> ({textDecoration: isActive ? "underline" : "none"})}>MyStore</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link as={NavLink} to="/products" style={({isActive})=> ({textDecoration: isActive ? "underline" : "none"})}>Products</Nav.Link>
+        <Nav.Link as={NavLink} to="/products/list" style={({isActive})=> ({textDecoration: isActive ? "underline" : "none"})}>Products</Nav.Link>
+        <Nav.Link as={NavLink} to="/products/Add" style={({isActive})=> ({textDecoration: isActive ? "underline" : "none"})}>Add Products</Nav.Link>
          </Nav>
       </Navbar.Collapse>
     </Container>

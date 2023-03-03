@@ -1,13 +1,27 @@
 import Product from "./Product";
 import { useEffect, useState } from 'react';
 import { Alert, Col, Container, Row } from "react-bootstrap";
-import products from '../products.json'
+// import products from '../products.json'
 import { useOutletContext } from "react-router-dom";
+import { getProduct } from "../services/api";
 function Products () {
-    
+    const [products,setProducts]=useState([])
     const [visible,setVisible]=useState(false)
     const [visible2,setVisible2]=useState(false)
     const [currentUser] = useOutletContext();
+
+    useEffect(() => {                           //methode 1  
+      getProduct()
+      .then((res) =>{setProducts(res.data);
+      console.log(res)})
+      .catch((error) => console.log(error))
+    }, [])
+
+    // const getallProducts = async()=> {      // methods 2
+    //   const res = await getProduct()
+    //   setProducts(res);
+    // } 
+
 
     const buy=(product)=>{
         product.quantity--;
