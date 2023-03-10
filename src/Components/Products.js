@@ -1,33 +1,36 @@
 import Product from "./Product";
 import { useEffect, useState } from 'react';
 import { Alert, Col, Container, Row } from "react-bootstrap";
-// import products from '../products.json'
 import { useOutletContext } from "react-router-dom";
-import { getProduct } from "../services/api";
+import { deleteProduct, getProducts } from "../services/api";
 function Products () {
-    const [products,setProducts]=useState([])
+    const [products,setProducts] = useState([]);
     const [visible,setVisible]=useState(false)
     const [visible2,setVisible2]=useState(false)
     const [currentUser] = useOutletContext();
+    useEffect(() => {
+      // getProducts()
+      // .then((res)=>{setProducts(res.data);console.log(res)})
+      // .catch((error)=>console.log(error))
+      getAllProduct();
 
-    useEffect(() => {                           //methode 1  
-      getProduct()
-      .then((res) =>{setProducts(res.data);
-      console.log(res)})
-      .catch((error) => console.log(error))
     }, [])
-
-    // const getallProducts = async()=> {      // methods 2
-    //   const res = await getProduct()
-    //   setProducts(res);
-    // } 
-
-
+    
+    const getAllProduct=async()=>{
+      const res = await getProducts();
+      setProducts(res.data);
+    }
     const buy=(product)=>{
         product.quantity--;
         setVisible(true);
         setTimeout(()=>{setVisible(false)},2000)
     }
+    const deleteProd = async (id) => {
+      const result = window.confirm("Are you sure you want to delete?");
+    if (result) {
+      await deleteProduct(id);
+      getAllProduct(); }
+  }
     useEffect(() => {
       setVisible2(true);
       setTimeout(()=>{setVisible2(false)},3000)
@@ -40,7 +43,7 @@ function Products () {
         return ( 
             <Container>
             <Row>
-            {currentUser}
+            {/* {currentUser} */}
            {visible2 &&  <Alert variant="success">
             <Alert.Heading>Hey, Welcome To Our Shop <strong> MyStore </strong>    </Alert.Heading>
             <p>
@@ -51,7 +54,7 @@ function Products () {
         }
             {products.map((element,index)=>
                 <Col key={index}>
-                <Product product={element} buyFunction={buy}/>
+                <Product product={element} buyFunction={buy} deleteProd={deleteProd}/>
                 </Col>
             )}
          {visible &&   <Alert style={{ marginTop: "30px" }} variant="primary">

@@ -1,16 +1,16 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import AddProduct from './Components/addProduct';
 import CustomNavbar from './Components/CustomNavbar';
+import ReduxComponent from './Redux/ReduxComponent';
 
 
 const Home = lazy(()=>import('./Components/Home'));
+const UpdateProduct = lazy(()=>import('./Components/UpdateProduct'));
+
 const ProductDetails = lazy(()=>import('./Components/ProductDetails'));
-
+const AddProduct = lazy(()=>import('./Components/addProduct'));
 const Products = lazy(()=>import('./Components/Products'));
-const AddProducts = lazy(()=>import('./Components/addProduct'));
-
 const ProductLayout = lazy(()=>import('./Components/ProductLayout'));
 const NotFound = lazy(()=>import('./Components/NotFound'));
 
@@ -26,12 +26,16 @@ function App() {
     <CustomNavbar/>
     <Routes>
       <Route path="*" element={<NotFound/>}/>
-      <Route path="/" element={<h1>Home</h1>}/> 
+      <Route path="/" element={<h1>Home</h1>}/>
+      <Route path="/redux" element={<ReduxComponent/>}/> 
+
       <Route path="/home/:username" element={<Home/>}/> 
       <Route path="/products" element={<ProductLayout />}>
-          <Route path='list' element={<Products />}/>
-          <Route path="add" element={<AddProducts/>}/>
-          <Route path=":name" element={<ProductDetails/>}/>
+          <Route path="list" element={<Products />}/>
+          <Route path="add" element={<AddProduct/>}/>
+      <Route path='update/:id' element={<UpdateProduct />}/>
+
+          <Route path=":id" element={<ProductDetails/>}/>
       </Route>
     </Routes>
     </Suspense>
