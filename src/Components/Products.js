@@ -8,18 +8,18 @@ function Products () {
     const [visible,setVisible]=useState(false)
     const [visible2,setVisible2]=useState(false)
     const [currentUser] = useOutletContext();
-    useEffect(() => {
-      // getProducts()
-      // .then((res)=>{setProducts(res.data);console.log(res)})
-      // .catch((error)=>console.log(error))
-      getAllProduct();
+      useEffect(() => {
+        // getProducts()
+        // .then((res)=>{setProducts(res.data);console.log(res)})
+        // .catch((error)=>console.log(error))
+        getAllProduct();
 
-    }, [])
-    
-    const getAllProduct=async()=>{
-      const res = await getProducts();
-      setProducts(res.data);
-    }
+      }, [])
+      
+      const getAllProduct=async()=>{
+        const res = await getProducts();
+        setProducts(res.data);
+      }
     const buy=(product)=>{
         product.quantity--;
         setVisible(true);
@@ -30,7 +30,7 @@ function Products () {
     if (result) {
       await deleteProduct(id);
       getAllProduct(); }
-  }
+  } 
     useEffect(() => {
       setVisible2(true);
       setTimeout(()=>{setVisible2(false)},3000)
