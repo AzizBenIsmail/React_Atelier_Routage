@@ -1,26 +1,36 @@
 import Product from "./Product";
 import { useEffect, useState } from 'react';
-import { Alert, Col, Container, Row } from "react-bootstrap";
-import { useOutletContext } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row  from "react-bootstrap/Row";
+
+// import { useOutletContext } from "react-router-dom";
 import { deleteProduct, getProducts } from "../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { populateProducts } from "../ReduxToolkit/slices/productSlice";
 function Products () {
-    const [products,setProducts] = useState([]);
+    const products = useSelector((state)=>state.products.products)
+    const dispatch= useDispatch();
     const [visible,setVisible]=useState(false)
     const [visible2,setVisible2]=useState(false)
-    const [currentUser] = useOutletContext();
-      useEffect(() => {
-        // getProducts()
-        // .then((res)=>{setProducts(res.data);console.log(res)})
-        // .catch((error)=>console.log(error))
-        getAllProduct();
+    // const [currentUser] = useOutletContext();
+    useEffect(() => {
+      // getProducts()
+      // .then((res)=>{setProducts(res.data);console.log(res)})
+      // .catch((error)=>console.log(error))
+      getAllProduct();
 
-      }, [])
-      
-      const getAllProduct=async()=>{
-        const res = await getProducts();
-        setProducts(res.data);
-      }
+    }, [])
+    
+    const getAllProduct=async()=>{
+      await getProducts().then((res)=>dispatch(populateProducts(res.data)));
+      // setProducts(res.data);
+    }
     const buy=(product)=>{
+      console.log('====================================');
+      console.log(product);
+      console.log('====================================');
         product.quantity--;
         setVisible(true);
         setTimeout(()=>{setVisible(false)},2000)
@@ -30,7 +40,7 @@ function Products () {
     if (result) {
       await deleteProduct(id);
       getAllProduct(); }
-  } 
+  }
     useEffect(() => {
       setVisible2(true);
       setTimeout(()=>{setVisible2(false)},3000)
@@ -52,8 +62,9 @@ function Products () {
             <hr />
           </Alert>
         }
-            {products.map((element,index)=>
-                <Col key={index}>
+            {products && products.map((element,index)=>
+            
+                <Col key={index} >
                 <Product product={element} buyFunction={buy} deleteProd={deleteProd}/>
                 </Col>
             )}
